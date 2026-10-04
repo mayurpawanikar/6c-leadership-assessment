@@ -1,0 +1,33 @@
+{
+  "siteUrl": "https://atos365nam.sharepoint.com/sites/100076814",
+  "connectorId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+  "connectionReferenceLogicalName": "test_autoins",
+  "lists": [
+    "Campaigns",
+    "Employees",
+    "Managers",
+    "Admins",
+    "Assessments",
+    "Responses",
+    "Assessment Inputs",
+    "Supporting Documents",
+    "HRUsers",
+    "6C Framework Configuration",
+    "Audit Log"
+  ],
+  "supportingDocumentsLibrary": "6C Assessment Supporting Documents",
+  "schemaSource": "power-apps/sharepoint-schema.md",
+  "bindingStatus": "Configured for runtime role lookup; tenant connection authorization and list provisioning are still required",
+  "roleAccessLists": {
+    "hrUsers": "HRUsers",
+    "employees": "Employees",
+    "managers": "Managers",
+    "admins": "Admins"
+  },
+  "requiredAfterProvisioning": [
+    "Create every list and the supportingDocuments library at the target site",
+    "Authorize the Microsoft MCP Servers connection in the target Power Platform environment",
+    "Grant app users read access to HRUsers, Employees, Managers, and Admins",
+    "Keep the app SharePoint configuration aligned with deployed site and list names"
+  ]
+}

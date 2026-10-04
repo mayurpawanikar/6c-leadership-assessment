@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "6C Agent Analysis Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "assessmentId",
+    "assessmentVersion",
+    "stage",
+    "status",
+    "generatedAtUtc",
+    "agentVersion",
+    "potentialSummary",
+    "strengths",
+    "developmentPriorities",
+    "selfManagerGaps",
+    "businessOutcomeAlignment",
+    "readinessGuidance",
+    "recommendedActions",
+    "validationMessages"
+  ],
+  "properties": {
+    "assessmentId": { "type": "string", "format": "uuid" },
+    "assessmentVersion": { "type": "integer", "minimum": 1 },
+    "stage": { "enum": ["employee", "manager"] },
+    "status": { "enum": ["completed", "needs_review", "failed"] },
+    "generatedAtUtc": { "type": "string", "format": "date-time" },
+    "agentVersion": { "type": "string", "minLength": 1 },
+    "potentialSummary": { "$ref": "#/$defs/finding" },
+    "strengths": { "type": "array", "maxItems": 6, "items": { "$ref": "#/$defs/finding" } },
+    "developmentPriorities": { "type": "array", "maxItems": 3, "items": { "$ref": "#/$defs/finding" } },
+    "selfManagerGaps": { "type": "array", "items": { "$ref": "#/$defs/gap" } },
+    "businessOutcomeAlignment": { "type": "array", "items": { "$ref": "#/$defs/finding" } },
+    "readinessGuidance": { "$ref": "#/$defs/finding" },
+    "recommendedActions": { "type": "array", "maxItems": 5, "items": { "$ref": "#/$defs/action" } },
+    "validationMessages": { "type": "array", "items": { "type": "string" } }
+  },
+  "$defs": {
+    "citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceType", "sourceRef"],
+      "properties": {
+        "sourceType": { "enum": ["framework", "employee_response", "manager_response", "assessment_input", "supporting_document"] },
+        "sourceRef": { "type": "string", "minLength": 1 }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "statement", "confidence", "citations"],
+      "properties": {
+        "title": { "type": "string" },
+        "statement": { "type": "string" },
+        "confidence": { "enum": ["high", "medium", "limited"] },
+        "citations": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/citation" } }
+      }
+    },
+    "gap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["factorName", "dimensionName", "employeeRating", "managerRating", "difference", "interpretation", "citations"],
+      "properties": {
+        "factorName": { "type": "string" },
+        "dimensionName": { "type": "string" },
+        "employeeRating": { "type": "integer", "minimum": 1, "maximum": 4 },
+        "managerRating": { "type": "integer", "minimum": 1, "maximum": 4 },
+        "difference": { "type": "integer", "minimum": -3, "maximum": 3 },
+        "interpretation": { "type": "string" },
+        "citations": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/citation" } }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action", "successMeasure", "timeframe", "citations"],
+      "properties": {
+        "action": { "type": "string" },
+        "successMeasure": { "type": "string" },
+        "timeframe": { "type": "string" },
+        "citations": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/citation" } }
+      }
+    }
+  }
+}
